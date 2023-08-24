@@ -18,7 +18,7 @@ namespace AppMaquinaBD.Data.Entity
 
         [Required(ErrorMessage = "El CUIL es Obligatorio")]
         [MaxLength(11, ErrorMessage = "El CUIL debe tener 11 caracteres")]
-        public string CUIL { get; set; } = "";
+        public int? CUIL { get; set; }
         public List<Trabajo>? Trabajos { get; set; }
     }
 }

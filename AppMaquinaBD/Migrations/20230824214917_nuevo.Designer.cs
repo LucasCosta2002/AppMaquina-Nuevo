@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppMaquinaBD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230823201956_nuevo")]
+    [Migration("20230824214917_nuevo")]
     partial class nuevo
     {
         /// <inheritdoc />
@@ -33,10 +33,10 @@ namespace AppMaquinaBD.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CUIL")
+                    b.Property<int?>("CUIL")
                         .IsRequired()
                         .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -83,8 +83,13 @@ namespace AppMaquinaBD.Migrations
 
                     b.Property<string>("DNI")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()

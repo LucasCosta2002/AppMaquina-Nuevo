@@ -5,11 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using AppMaquina.Shared.DTO;
 using System.Net;
 using System.IO.Pipelines;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AppMaquina.Server.Controllers
 {
     [ApiController]
-    [Route("/Maquinistas")]
+    [Route("api/Maquinistas")]
     public class MaquinistaController : ControllerBase
     {
         private readonly Context context;
@@ -19,43 +21,48 @@ namespace AppMaquina.Server.Controllers
             this.context = context;
         }
 
-        [HttpGet("{DNI:string}")]
-        public async Task<ActionResult<Maquinista>> Get(string dni)
+        [HttpGet]
+        public async Task<ActionResult<List<Maquinista>>> Get()
         {
-            var exist = await context.Maquinistas.AnyAsync(x => x.DNI == dni);
-            if (!exist)
-            {
-                return NotFound("Usuario no existente");
-            }
+            var maquinistas = await context.Maquinistas.ToListAsync();
 
-            return await context.Maquinistas.FirstOrDefaultAsync(maquinista => maquinista.DNI == dni);
+            if (maquinistas == null || maquinistas.Count == 0)
+            {
+                return BadRequest("no hay maquinistas registrados");
+            }
+            return maquinistas;
         }
 
-        //[HttpGet("{id:int}")]
-        //public async Task<ActionResult<Maquinista>> Get(int id)
-        //{
-        //    var exist = await context.Maquinistas.AnyAsync(x => x.Id == id);
-        //    if (!exist)
-        //    {
-        //        return NotFound("Usuario no existente");
-        //    }
 
-        //    return await context.Maquinistas.FirstOrDefaultAsync(maquinista => maquinista.Id == id);
-        //}
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Maquinista>> Get(int id)
+        {
+            var existe = await context.Maquinistas.AnyAsync(x => x.Id == id);
+            if (!existe)
+            {
+                return NotFound($"El maquinista {id} no existe");
+            }
+            return await context.Maquinistas.FirstOrDefaultAsync(x => x.Id == id);
+        }
 
         [HttpPost]
-        public async Task<ActionResult<Maquinista>> Post(Maquinista maquinista)
+        public async Task<ActionResult> Post(MaquinistaDTO maquinista)
         {
             try
             {
-                context.Maquinistas.Add(maquinista);
+                //var maquinistaDTO = new Maquinista
+                //{
+                //    DNI = maquinista.DNI,
+                //    Nombre = maquinista.Nombre,
+                //    Telefono = maquinista.Telefono,
+                //    Password = maquinista.Password,
+
+                //};
+                context.Add(maquinista);
                 await context.SaveChangesAsync();
-                return maquinista;
+                return Ok();
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            catch (Exception ex) { return BadRequest(ex); }
         }
     }
 }
