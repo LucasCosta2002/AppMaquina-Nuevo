@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppMaquinaBD.Data.Entity
+namespace AppMaquina.Shared.DTO
 {
-    public class Trabajo
+    public class TrabajoDTO
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "La Fecha es Obligatoria")]
         public DateTime Fecha { get; set; }
 
@@ -21,11 +19,8 @@ namespace AppMaquinaBD.Data.Entity
         public string Agroquimico { get; set; }
         public string Ubicacion { get; set; }
         public int MaquinistaId { get; set; }
-        public Maquinista Maquinista { get; set; }
+        public MaquinistaDTO MaquinistaDTO { get; set; }
         public int ClienteId { get; set; }
-        public Cliente Cliente { get; set; }
-        //public int MaquinaId { get; set; }
-        //public Maquina Maquina { get; set; }
+        public ClienteDTO ClienteDTO { get; set; }
     }
 }
-

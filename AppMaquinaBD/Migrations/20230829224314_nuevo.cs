@@ -19,7 +19,7 @@ namespace AppMaquinaBD.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CUIL = table.Column<int>(type: "int", maxLength: 11, nullable: false)
+                    CUIL = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,33 +34,12 @@ namespace AppMaquinaBD.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     DNI = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Maquinistas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Maquina",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NumMaquina = table.Column<int>(type: "int", nullable: false),
-                    MaquinistaId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Maquina", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Maquina_Maquinistas_MaquinistaId",
-                        column: x => x.MaquinistaId,
-                        principalTable: "Maquinistas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,8 +53,7 @@ namespace AppMaquinaBD.Migrations
                     Agroquimico = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ubicacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MaquinistaId = table.Column<int>(type: "int", nullable: false),
-                    ClienteId = table.Column<int>(type: "int", nullable: false),
-                    MaquinaId = table.Column<int>(type: "int", nullable: false)
+                    ClienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,12 +65,6 @@ namespace AppMaquinaBD.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Trabajos_Maquina_MaquinaId",
-                        column: x => x.MaquinaId,
-                        principalTable: "Maquina",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Trabajos_Maquinistas_MaquinistaId",
                         column: x => x.MaquinistaId,
                         principalTable: "Maquinistas",
@@ -101,19 +73,9 @@ namespace AppMaquinaBD.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Maquina_MaquinistaId",
-                table: "Maquina",
-                column: "MaquinistaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Trabajos_ClienteId",
                 table: "Trabajos",
                 column: "ClienteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Trabajos_MaquinaId",
-                table: "Trabajos",
-                column: "MaquinaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trabajos_MaquinistaId",
@@ -129,9 +91,6 @@ namespace AppMaquinaBD.Migrations
 
             migrationBuilder.DropTable(
                 name: "Clientes");
-
-            migrationBuilder.DropTable(
-                name: "Maquina");
 
             migrationBuilder.DropTable(
                 name: "Maquinistas");

@@ -42,27 +42,68 @@ namespace AppMaquina.Server.Controllers
             {
                 return NotFound($"El maquinista {id} no existe");
             }
+            //consultar tabla y traer el maquinista
+
             return await context.Maquinistas.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(MaquinistaDTO maquinista)
+        public async Task<ActionResult<Maquinista>> Post(MaquinistaDTO maquinista)
         {
             try
             {
-                //var maquinistaDTO = new Maquinista
-                //{
-                //    DNI = maquinista.DNI,
-                //    Nombre = maquinista.Nombre,
-                //    Telefono = maquinista.Telefono,
-                //    Password = maquinista.Password,
-
-                //};
-                context.Add(maquinista);
+                var maquinistaNuevo = new Maquinista
+                {
+                    DNI = maquinista.DNI,
+                    Nombre = maquinista.Nombre,
+                    Telefono = maquinista.Telefono,
+                    Password = maquinista.Password,
+                };
+                await context.AddAsync(maquinistaNuevo);
                 await context.SaveChangesAsync();
-                return Ok();
+                return maquinistaNuevo;
             }
-            catch (Exception ex) { return BadRequest(ex); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(Maquinista maquinista, int id)
+        {
+            //Comprobar que el id que pasen sea el mismo que en el body
+            if (id != maquinista.Id )
+            {
+                return BadRequest("Id invalido");
+            }
+            //comprobar que ese id exista en la base de datos
+            var exist = await context.Maquinistas.AnyAsync(e => e.Id == id);
+            if (!exist)
+            {
+                return BadRequest("El Maquinista no existe");
+            }
+
+            //actualizar
+            context.Update(maquinista);
+            await context.SaveChangesAsync();
+            return Ok("Actualizado con Exito");
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id) 
+        {
+            //comprobar que ese id exista en la base de datos
+            var exist = await context.Maquinistas.AnyAsync(e => e.Id == id);
+            if (!exist)
+            {
+                return BadRequest("El Maquinista no existe");
+            }
+
+            //Asignar el id ingreasado a la entidad a borrar
+            Maquinista maquinista = new Maquinista();
+            maquinista.Id = id;
+
+            context.Remove(maquinista);
+            await context.SaveChangesAsync();
+            return Ok("Eliminado con exito");
         }
     }
 }

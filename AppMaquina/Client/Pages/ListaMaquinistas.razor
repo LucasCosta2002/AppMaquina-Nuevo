@@ -1,0 +1,68 @@
+﻿@page "/Maquinistas"
+@inject IHTTPServicio http;
+
+<h3>ListaMaquinistas</h3>
+
+<a class="btn btn-primary">Obtener Maquinistas</a>
+
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Telefono</th>
+    </tr>
+
+    @if (Error)
+    {
+
+    }
+    else
+    {
+
+        @if (maquinistas == null)
+        {
+            <tr>Cargando...</tr>
+        }
+        else if (maquinistas.Count == 0)
+        {
+            <tr>No hay datos cargados</tr>
+        }
+        else
+        {
+            @foreach (var item in maquinistas)
+            {
+                <tr>
+                    <th>@item.Nombre</th>
+                    <th>@item.Telefono</th>
+                </tr>
+            }
+        }
+    }
+
+
+</table>
+
+@code {
+    List<Maquinista>? maquinistas;
+    string Mensaje = "";
+    bool Error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+    }
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Maquinista>>("api/Maquinistas");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            maquinistas = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+}

@@ -20,10 +20,6 @@ namespace AppMaquinaBD.Data.Entity
 
         public string DNI { get; set; }
 
-        [Required(ErrorMessage = "El Email es Obligatorio")]
-        [MaxLength(60, ErrorMessage = "Solo se aceptan hasta 60 caracteres en el Email")]
-        public string Email { get; set; } = "";
-
         [Required(ErrorMessage = "El Telefono es Obligatorio")]
         [MaxLength(10, ErrorMessage = "Solo se aceptan hasta 10 caracteres en el Telefono")]
         public string Telefono { get; set; } = "";

@@ -13,12 +13,9 @@ namespace AppMaquinaBD.Data.Entity
 
         [Required(ErrorMessage = "El Nombre es Obligatorio")]
         [MaxLength(60, ErrorMessage = "Solo se aceptan hasta 60 caracteres en el Nombre")]
-        public string Nombre { get; set; } = "";
-        public string Telefono { get; set; } = "";
+        public string Nombre { get; set; }
+        public string Telefono { get; set; }
 
-        [Required(ErrorMessage = "El CUIL es Obligatorio")]
-        [MaxLength(11, ErrorMessage = "El CUIL debe tener 11 caracteres")]
-        public int? CUIL { get; set; }
-        public List<Trabajo>? Trabajos { get; set; }
+        public string CUIL { get; set; }
     }
 }

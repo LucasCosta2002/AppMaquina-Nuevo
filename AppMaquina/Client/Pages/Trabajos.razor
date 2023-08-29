@@ -1,0 +1,19 @@
+﻿@page "/Trabajos"
+
+<h3>CrearTrabajo</h3>
+
+<FormTrabajo trabajo="trabajo" onValidSubmit="Grabar">
+
+</FormTrabajo>
+<p>@mensaje</p>
+
+
+@code {
+    Trabajo trabajo = new Trabajo();
+    string mensaje = "";
+    private async void Grabar()
+    {
+        mensaje = "enviado";
+    }
+
+}

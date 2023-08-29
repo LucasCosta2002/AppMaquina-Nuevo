@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AppMaquina\Client\AppMaquina.Client.csproj" />
     <ProjectReference Include="..\AppMaquina\Shared\AppMaquina.Shared.csproj" />
   </ItemGroup>
 

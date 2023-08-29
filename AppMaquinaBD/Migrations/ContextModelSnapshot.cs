@@ -30,10 +30,9 @@ namespace AppMaquinaBD.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CUIL")
+                    b.Property<string>("CUIL")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -49,27 +48,6 @@ namespace AppMaquinaBD.Migrations
                     b.ToTable("Clientes");
                 });
 
-            modelBuilder.Entity("AppMaquinaBD.Data.Entity.Maquina", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MaquinistaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumMaquina")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MaquinistaId");
-
-                    b.ToTable("Maquina");
-                });
-
             modelBuilder.Entity("AppMaquinaBD.Data.Entity.Maquinista", b =>
                 {
                     b.Property<int>("Id")
@@ -82,11 +60,6 @@ namespace AppMaquinaBD.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -128,9 +101,6 @@ namespace AppMaquinaBD.Migrations
                     b.Property<int>("Hectareas")
                         .HasColumnType("int");
 
-                    b.Property<int>("MaquinaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MaquinistaId")
                         .HasColumnType("int");
 
@@ -142,35 +112,16 @@ namespace AppMaquinaBD.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("MaquinaId");
-
                     b.HasIndex("MaquinistaId");
 
                     b.ToTable("Trabajos");
                 });
 
-            modelBuilder.Entity("AppMaquinaBD.Data.Entity.Maquina", b =>
-                {
-                    b.HasOne("AppMaquinaBD.Data.Entity.Maquinista", "Maquinista")
-                        .WithMany()
-                        .HasForeignKey("MaquinistaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Maquinista");
-                });
-
             modelBuilder.Entity("AppMaquinaBD.Data.Entity.Trabajo", b =>
                 {
                     b.HasOne("AppMaquinaBD.Data.Entity.Cliente", "Cliente")
-                        .WithMany("Trabajos")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AppMaquinaBD.Data.Entity.Maquina", "Maquina")
                         .WithMany()
-                        .HasForeignKey("MaquinaId")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -182,14 +133,7 @@ namespace AppMaquinaBD.Migrations
 
                     b.Navigation("Cliente");
 
-                    b.Navigation("Maquina");
-
                     b.Navigation("Maquinista");
-                });
-
-            modelBuilder.Entity("AppMaquinaBD.Data.Entity.Cliente", b =>
-                {
-                    b.Navigation("Trabajos");
                 });
 
             modelBuilder.Entity("AppMaquinaBD.Data.Entity.Maquinista", b =>

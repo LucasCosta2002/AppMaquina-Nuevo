@@ -15,11 +15,7 @@ namespace AppMaquina.Shared.DTO
 
         [Required(ErrorMessage = "El DNI es Obligatorio")]
         [MaxLength(8, ErrorMessage = "El DNI debe tener al menos 8 caracteres")]
-        public int DNI{ get; set; }
-
-        [Required(ErrorMessage = "El Email es Obligatorio")]
-        [MaxLength(60, ErrorMessage = "Solo se aceptan hasta 60 caracteres en el Email")]
-        public string Email { get; set; } = "";
+        public string DNI { get; set; } = "";
 
         [Required(ErrorMessage = "El Telefono es Obligatorio")]
         [MaxLength(10, ErrorMessage = "Solo se aceptan hasta 10 caracteres en el Telefono")]
@@ -28,7 +24,5 @@ namespace AppMaquina.Shared.DTO
         [Required(ErrorMessage = "La contraseña es Obligatoria")]
         [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
         public string Password { get; set; }
-
-
     }
 }

@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\AppMaquina.Shared.csproj" />
+	  <ProjectReference Include="..\..\AppMaquinaBD\AppMaquinaBD.csproj" />
+	  <ProjectReference Include="..\Shared\AppMaquina.Shared.csproj" />
   </ItemGroup>
 
 </Project>
