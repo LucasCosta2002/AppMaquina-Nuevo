@@ -1,9 +1,42 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>AppMaquina</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="my-4">
+    <h4 class="text-uppercase fw-bold">Trabajos</h4>
+</div>
 
-Welcome to your new app.
+<div class="table-responsive shadow-md mb-4">
+    <table class="table table-hover">
+        <thead class="bg-success text-center fw-bolder">
+            <tr>
+                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Id</th>
+                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Cliente</th>
+                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Ubicación</th>
+                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Hectareas</th>
+                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Producto</th>
+                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Fecha</th>
+                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Acciones</th>
+            </tr>
+        </thead>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+        <tr class="border-bottom bg-light">
+            <td class="p-3 text-center fw-bold">1</td>
+            <td class="p-3  text-center">Martin Campra</td>
+            <td class="p-3 text-center">Dos Hermanos</td>
+            <td class="p-3 text-center">34</td>
+            <td class="p-3 text-center">RoundUp</td>
+            <td class="p-3  text-center">19/08/2023</td>
+            <td class="p-3  d-flex justify-content-center align-items-center gap-2">
+                <button class="btn btn-sm btn-success d-inline-block mr-1"><i class="oi oi-pencil"></i></button>
+                <button class="btn btn-sm btn-danger d-inline-block"><i class="oi oi-trash"></i></button>
+            </td>
+        </tr>
+        
+    </table>
+</div>
+
+@code {
+
+}
+

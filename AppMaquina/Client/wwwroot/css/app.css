@@ -99,3 +99,12 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+
+.bg-nav {
+    background-color: #4d9640;
+}
+
+.bg-fondo {
+    background-color: #e0e0e0;
+}
