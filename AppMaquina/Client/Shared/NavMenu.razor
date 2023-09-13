@@ -1,12 +1,14 @@
-﻿<div class="top-row  navbar navbar-dark bg-nav">
+﻿<div class="top-row  navbar bg-success">
     <div class="container-fluid">
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
+            <span class="oi oi-menu text-white">
+
+            </span>
         </button>
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable bg-nav" @onclick="ToggleNavMenu">
+<div class="@NavMenuCssClass nav-scrollable bg-success" @onclick="ToggleNavMenu">
     <nav class="flex-column fw-bold">
         <div class="nav-item px-3">
             <NavLink class="nav-link " href="/" Match="NavLinkMatch.All">

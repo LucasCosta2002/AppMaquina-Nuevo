@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppMaquinaBD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230829224314_nuevo")]
-    partial class nuevo
+    [Migration("20230913174323_DTO")]
+    partial class DTO
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,8 +113,6 @@ namespace AppMaquinaBD.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
-
                     b.HasIndex("MaquinistaId");
 
                     b.ToTable("Trabajos");
@@ -122,21 +120,11 @@ namespace AppMaquinaBD.Migrations
 
             modelBuilder.Entity("AppMaquinaBD.Data.Entity.Trabajo", b =>
                 {
-                    b.HasOne("AppMaquinaBD.Data.Entity.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AppMaquinaBD.Data.Entity.Maquinista", "Maquinista")
+                    b.HasOne("AppMaquinaBD.Data.Entity.Maquinista", null)
                         .WithMany("Trabajos")
                         .HasForeignKey("MaquinistaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Cliente");
-
-                    b.Navigation("Maquinista");
                 });
 
             modelBuilder.Entity("AppMaquinaBD.Data.Entity.Maquinista", b =>

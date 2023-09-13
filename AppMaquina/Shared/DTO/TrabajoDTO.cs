@@ -19,8 +19,6 @@ namespace AppMaquina.Shared.DTO
         public string Agroquimico { get; set; }
         public string Ubicacion { get; set; }
         public int MaquinistaId { get; set; }
-        public MaquinistaDTO MaquinistaDTO { get; set; }
         public int ClienteId { get; set; }
-        public ClienteDTO ClienteDTO { get; set; }
     }
 }

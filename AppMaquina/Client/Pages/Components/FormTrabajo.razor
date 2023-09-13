@@ -1,36 +1,44 @@
 ﻿
 <EditForm Model="trabajo" OnValidSubmit="onValidSubmit">
+        <DataAnnotationsValidator />
 
-        <form id="new_customer" method="post">
+        <form>
             <div class="modal-body">
                 <div class="form-row">
+
                     <div class="col mb-3">
-                        <input class="form-control" placeholder="Cliente" type="text" name="clienteId">
-                    </div>
-                    <div class="col mb-3">
-                        <input class="form-control" placeholder="Hectareas" type="number" name="hectareas">
-                    </div>
-                    <div class="col mb-3">
-                        <input class="form-control" placeholder="Ubicacion" type="text" name="ubicacion">
+                        <InputNumber class="form-control" type="text" placeholder="Referencia Cliente" name="clienteId" @bind-Value="@trabajo.ClienteId" />
+                        <ValidationMessage For="@(() => trabajo.ClienteId)" />
                     </div>
 
                     <div class="col mb-3">
-                        <input class="form-control" placeholder="Producto" type="text" name="agroquimico">
+                        <InputNumber class="form-control" type="number" placeholder="Hectareas" name="hectareas" @bind-Value="@trabajo.Hectareas" />
+                        <ValidationMessage For="@(() => trabajo.Hectareas)" />
+                    </div>
+                    <div class="col mb-3">
+                        <InputText class="form-control" type="text" placeholder="Ubicacion" name="ubicacion" @bind-Value="@trabajo.Ubicacion" />
+                        <ValidationMessage For="@(() => trabajo.Ubicacion)" />
                     </div>
 
                     <div class="col mb-3">
-                        <input class="form-control" placeholder="Identificacion del maquinista" type="text" name="maquinistaId">
+                        <InputText class="form-control" type="text" placeholder="Agroquimico" name="agroquimico" @bind-Value="@trabajo.Agroquimico" />
+                        <ValidationMessage For="@(() => trabajo.Agroquimico)" />
                     </div>
-                </div>
 
-                <div class="form-row">
                     <div class="col-5 mb-3">
-                        <input class="form-control" type="date" name="fecha">
+                        <InputDate class="form-control" name="fecha" @bind-Value="@trabajo.Fecha" />
+                        <ValidationMessage For="@(() => trabajo.Fecha)" />
                     </div>
+
+                    <div class="col mb-3">
+                        <InputNumber class="form-control" placeholder="Referencia Maquinista" name="maquinistaId" @bind-Value="@trabajo.MaquinistaId" />
+                        <ValidationMessage For="@(() => trabajo.MaquinistaId)" />
+                    </div> 
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="reset1">Crear</button>
+                <button type="submit" class="btn btn-primary" >Crear</button>
+                <button type="submit" class="btn btn-danger" @onclick="onCancel" >Cancelar</button>
             </div>
         </form>
 </EditForm>
@@ -38,5 +46,6 @@
 @code {
     [Parameter] public Trabajo trabajo { get; set; }
     [Parameter] public EventCallback onValidSubmit { get; set; }
+    [Parameter] public EventCallback onCancel { get; set; }
 
 }

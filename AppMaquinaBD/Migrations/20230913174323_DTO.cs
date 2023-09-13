@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppMaquinaBD.Migrations
 {
     /// <inheritdoc />
-    public partial class nuevo : Migration
+    public partial class DTO : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,23 +59,12 @@ namespace AppMaquinaBD.Migrations
                 {
                     table.PrimaryKey("PK_Trabajos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Trabajos_Clientes_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "Clientes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Trabajos_Maquinistas_MaquinistaId",
                         column: x => x.MaquinistaId,
                         principalTable: "Maquinistas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Trabajos_ClienteId",
-                table: "Trabajos",
-                column: "ClienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trabajos_MaquinistaId",
@@ -87,10 +76,10 @@ namespace AppMaquinaBD.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Trabajos");
+                name: "Clientes");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Trabajos");
 
             migrationBuilder.DropTable(
                 name: "Maquinistas");

@@ -21,9 +21,7 @@ namespace AppMaquinaBD.Data.Entity
         public string Agroquimico { get; set; }
         public string Ubicacion { get; set; }
         public int MaquinistaId { get; set; }
-        public Maquinista Maquinista { get; set; }
         public int ClienteId { get; set; }
-        public Cliente Cliente { get; set; }
         //public int MaquinaId { get; set; }
         //public Maquina Maquina { get; set; }
     }

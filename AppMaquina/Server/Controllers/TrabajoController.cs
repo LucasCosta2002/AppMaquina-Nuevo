@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AppMaquina.Server.Controllers
 {
     [ApiController]
-    [Route("api/Trabajos")]
+    [Route("api/trabajos")]
     public class TrabajoController : ControllerBase
     {
         private readonly Context context;
