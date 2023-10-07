@@ -1,0 +1,39 @@
+﻿@page "/agregarTrabajo"
+
+<div class="d-flex justify-content-between">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3">
+        Agregar Trabajo
+    </h3>
+</div>
+
+<FormTrabajo trabajo="trabajo" onValidSubmit="Grabar" onCancel="Cancelar"/>
+
+@code {
+    private Trabajo trabajo = new Trabajo();
+
+    private async Task Grabar()
+    {
+        TrabajoDTO trabajoDTO = new()
+            {
+                Fecha = trabajo.Fecha,
+                Hectareas = trabajo.Hectareas,
+                Agroquimico = trabajo.Agroquimico,
+                Ubicacion = trabajo.Ubicacion,
+                MaquinistaId = trabajo.MaquinistaId,
+                ClienteId = trabajo.ClienteId
+            };
+
+        var HTTPRespueta = await http.Post<TrabajoDTO>("api/trabajos", trabajoDTO);
+
+        if (HTTPRespueta.Error)
+        {
+            var body = HTTPRespueta.HttpResponseMessage;
+        }
+        navigationManager.NavigateTo("/");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/");
+    }
+}

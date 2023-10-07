@@ -1,42 +1,114 @@
 ﻿@page "/"
+@using AppMaquinaBD.Data.Entity;
 
 <PageTitle>AppMaquina</PageTitle>
 
-<div class="my-4">
-    <h4 class="text-uppercase fw-bold">Trabajos</h4>
+<div class="d-flex justify-content-between gap-3 align-items-center">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3">
+        Listado de Trabajos registrados
+    </h3>
+
+    <a href="/agregarTrabajo" class="btn btn-primary d-flex align-items-center fw-bold">Agregar Trabajo</a>
 </div>
 
-<div class="table-responsive shadow-md mb-4">
-    <table class="table table-hover">
-        <thead class="bg-success text-center fw-bolder">
-            <tr>
-                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Id</th>
-                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Cliente</th>
-                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Ubicación</th>
-                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Hectareas</th>
-                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Producto</th>
-                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Fecha</th>
-                <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Acciones</th>
-            </tr>
-        </thead>
 
-        <tr class="border-bottom bg-light">
-            <td class="p-3 text-center fw-bold">1</td>
-            <td class="p-3  text-center">Martin Campra</td>
-            <td class="p-3 text-center">Dos Hermanos</td>
-            <td class="p-3 text-center">34</td>
-            <td class="p-3 text-center">RoundUp</td>
-            <td class="p-3  text-center">19/08/2023</td>
-            <td class="p-3  d-flex justify-content-center align-items-center gap-2">
-                <button class="btn btn-sm btn-success d-inline-block mr-1"><i class="oi oi-pencil"></i></button>
-                <button class="btn btn-sm btn-danger d-inline-block"><i class="oi oi-trash"></i></button>
-            </td>
-        </tr>
-        
-    </table>
-</div>
-
-@code {
+@if (Error)
+{
 
 }
+else
+{
+    @if (trabajos == null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-grow text-success" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    }
+    else if (trabajos.Count == 0)
+    {
+        <tr>No hay datos cargados</tr>
+    }
+    else
+    {
+        <div class="table-responsive shadow-md my-4">
+            <table class="table table-hover">
+                <thead class="bg-success text-center fw-bolder">
+                    <tr>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Id</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Cliente</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Maquinista</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Ubicación</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Hectareas</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Producto</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Fecha</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Acciones</th>
+                    </tr>
+                </thead>
+                @foreach (var item in trabajos)
+                {
+                    var cliente = clientes.FirstOrDefault(c => c.Id == item.ClienteId);
+                    var maquinista = maquinistas.FirstOrDefault(m => m.Id == item.MaquinistaId);
+
+                    <tr class="border-bottom bg-light">
+                        <td class="p-3 text-center">@item.Id</td>
+                        <td class="p-3 text-center">@item.Ubicacion</td>
+                        <td class="p-3 text-center">@item.Hectareas</td>
+                        <td class="p-3 text-center">@item.Agroquimico</td>
+                        <td class="p-3 text-center">@item.Fecha.ToShortDateString()</td>
+                        <td class="p-3  d-flex justify-content-center align-items-center gap-2">
+                            <a href="/editarTrabajo/@item.Id" class="btn btn-sm btn-success bg-primary d-inline-block mr-1"><i class="oi oi-pencil"></i></a>
+                            <button class="btn btn-sm btn-danger bg-danger d-inline-block" @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+}
+
+@code {
+    List<Trabajo>? trabajos;
+    List<Cliente> clientes = new List<Cliente>();
+    List<Maquinista> maquinistas = new List<Maquinista>();
+
+    string Mensaje = "";
+    bool Error;
+    Trabajo TrabajoBorrar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+    }
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Trabajo>>("api/trabajos");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            trabajos = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+    private async Task Eliminar(Trabajo trabajoBorrar)
+    {
+        TrabajoBorrar = trabajoBorrar;
+
+        var respuesta = await http.Delete($"api/trabajos/{TrabajoBorrar.Id}");
+        if (respuesta.Error)
+        {
+            var body = "error no se pudo borrar";
+        }
+        TrabajoBorrar = null;
+        await Leer();
+    }
+}
+
 

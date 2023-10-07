@@ -1,0 +1,37 @@
+﻿
+<EditForm Model="cliente" OnValidSubmit="onValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="modal-body d-flex justify-content-center mt-5">
+        <div class="form-row col-md-6">
+
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Nombre</label>
+                <InputText class="form-control" placeholder="Nombre" @bind-Value="@cliente.Nombre" />
+                <ValidationMessage For="@(() => cliente.Nombre)" />
+            </div>
+
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">CUIL</label>
+                <InputText class="form-control" placeholder="CUIL" @bind-Value="@cliente.CUIL" />
+                <ValidationMessage For="@(() => cliente.CUIL)" />
+            </div>
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Telefono</label>
+                <InputText class="form-control" type="text" placeholder="Telefono" name="telefono" @bind-Value="@cliente.Telefono" />
+                <ValidationMessage For="@(() => cliente.Telefono)" />
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center gap-4">
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+        <button type="submit" class="btn btn-danger" @onclick="onCancel">Cancelar</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Cliente cliente { get; set; } = new Cliente();
+    [Parameter] public EventCallback onValidSubmit { get; set; }
+    [Parameter] public EventCallback onCancel { get; set; }
+
+}

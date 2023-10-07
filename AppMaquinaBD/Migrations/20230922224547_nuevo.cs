@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppMaquinaBD.Migrations
 {
     /// <inheritdoc />
-    public partial class DTO : Migration
+    public partial class nuevo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,8 +34,7 @@ namespace AppMaquinaBD.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     DNI = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Telefono = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {

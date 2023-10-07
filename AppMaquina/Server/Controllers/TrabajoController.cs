@@ -55,14 +55,16 @@ namespace AppMaquina.Server.Controllers
                     Fecha = trabajoDTO.Fecha,
                     Hectareas = (int)trabajoDTO.Hectareas,
                     Agroquimico = trabajoDTO.Agroquimico,
-                    Ubicacion = trabajoDTO.Ubicacion
+                    Ubicacion = trabajoDTO.Ubicacion,
+                    MaquinistaId = trabajoDTO.MaquinistaId,
+                    ClienteId = trabajoDTO.ClienteId
                 };
 
-                
+
                 var clienteContext = await context.Clientes.FirstOrDefaultAsync(c => c.Id == trabajoDTO.ClienteId);
                 var maquinistaContext = await context.Maquinistas.FirstOrDefaultAsync(m => m.Id == trabajoDTO.MaquinistaId);
 
-                if (clienteContext is not null) 
+                if (clienteContext is not null)
                 {
                     nuevoTrabajo.ClienteId = clienteContext.Id;
                 }

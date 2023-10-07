@@ -66,10 +66,6 @@ namespace AppMaquinaBD.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Telefono")
                         .IsRequired()
                         .HasMaxLength(10)

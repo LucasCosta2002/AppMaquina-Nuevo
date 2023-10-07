@@ -1,0 +1,101 @@
+﻿@page "/clientes"
+
+
+<div class="d-flex justify-content-between gap-3 align-items-center">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3">
+        Listado de Clientes registrados
+    </h3>
+
+    <a href="/clientes/agregarCliente" class="btn btn-primary d-flex align-items-center fw-bold">Agregar Cliente</a>
+</div>
+
+@if (Error)
+{
+
+}
+else
+{
+    @if (clientes == null)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-grow text-success" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    }
+    else if (clientes.Count == 0)
+    {
+        <p>No hay datos cargados</p>
+    }
+    else
+    {
+        <div class="table-responsive shadow-md my-4">
+            <table class="table table-hover">
+                <thead class="bg-success text-center fw-bolder">
+                    <tr>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Nombre</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">CUIL</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Telefono</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Nro Referencia</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Acciones</th>
+
+                    </tr>
+                </thead>
+                @foreach (var item in clientes)
+                {
+                    <tr class="border-bottom bg-light">
+                        <td class="p-3 text-center">@item.Nombre</td>
+                        <td class="p-3  text-center">@item.CUIL</td>
+                        <td class="p-3 text-center">@item.Telefono</td>
+                        <td class="p-3 text-center">@item.Id</td>
+                        <td class="p-3  d-flex justify-content-center align-items-center gap-2">
+                            <a href="clientes/editarCliente/@item.Id" class="btn btn-sm btn-success bg-primary d-inline-block mr-1"><i class="oi oi-pencil"></i></a>
+                            <button class="btn btn-sm btn-danger bg-danger d-inline-block" @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+}
+
+
+@code {
+    List<Cliente>? clientes;
+    string Mensaje = "";
+    bool Error;
+    Cliente ClienteBorrar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+    }
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Cliente>>("api/clientes");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            clientes = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+    private async Task Eliminar(Cliente clienteBorrar)
+    {
+        ClienteBorrar = clienteBorrar;
+
+        var respuesta = await http.Delete($"api/clientes/{ClienteBorrar.Id}");
+        if (respuesta.Error)
+        {
+            var body = "error no se pudo borrar";
+        }
+        ClienteBorrar = null;
+        await Leer();
+    }
+}

@@ -1,0 +1,56 @@
+﻿@page "/clientes/editarCliente/{clienteId:int}"
+
+
+<div class="d-flex justify-content-between">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3">
+        Editar Maquinista
+    </h3>
+</div>
+
+<FormCliente cliente="cliente" onValidSubmit="Grabar" onCancel="Cancelar" />
+
+
+@code {
+    private Cliente cliente = new Cliente();
+
+    [Parameter] public int clienteId { get; set; }
+    bool Error = false;
+    string Mensaje = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Mostrar();
+    }
+
+    private async Task Mostrar()
+    {
+        var respuesta = await http.Get<Cliente>($"api/clientes/{clienteId}");
+
+        if (!respuesta.Error)
+        {
+            cliente = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+
+    }
+
+    private async Task Grabar()
+    {
+        var respuesta = await http.Put<Cliente>($"api/clientes/{clienteId}", cliente);
+        if (respuesta.Error)
+        {
+            var body = respuesta.HttpResponseMessage;
+        }
+
+        navigationManager.NavigateTo("/clientes");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/");
+    }
+}

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 namespace AppMaquina.Server.Controllers
 {
     [ApiController]
-    [Route("api/Maquinistas")]
+    [Route("api/maquinistas")]
     public class MaquinistaController : ControllerBase
     {
         private readonly Context context;
@@ -57,7 +57,6 @@ namespace AppMaquina.Server.Controllers
                     DNI = maquinista.DNI,
                     Nombre = maquinista.Nombre,
                     Telefono = maquinista.Telefono,
-                    Password = maquinista.Password,
                 };
                 await context.AddAsync(maquinistaNuevo);
                 await context.SaveChangesAsync();

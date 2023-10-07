@@ -1,0 +1,55 @@
+﻿@page "/editarTrabajo/{trabajoId:int}"
+
+
+<div class="d-flex justify-content-between">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3">
+        Editar Trabajo
+    </h3>
+</div>
+
+<FormTrabajo trabajo="trabajo" onValidSubmit="Grabar" onCancel="Cancelar"/>
+
+@code {
+    private Trabajo trabajo = new Trabajo();
+
+    [Parameter] public int trabajoId { get; set; }
+    bool Error = false;
+    string Mensaje = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Mostrar();
+    }
+
+    private async Task Mostrar()
+    {
+        var respuesta = await http.Get<Trabajo>($"api/trabajos/{trabajoId}");
+
+        if (!respuesta.Error)
+        {
+            trabajo = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+
+    }
+    
+    private async Task Grabar()
+    {
+        var respuesta = await http.Put<Trabajo>($"api/trabajo/{trabajoId}", trabajo);
+        if (respuesta.Error)
+        {
+            var body = respuesta.HttpResponseMessage;
+        }
+
+        navigationManager.NavigateTo("/");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/");
+    }
+}

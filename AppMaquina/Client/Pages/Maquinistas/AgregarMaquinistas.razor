@@ -1,0 +1,36 @@
+﻿@page "/maquinistas/agregarMaquinista"
+
+<div class="d-flex justify-content-between">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3">
+        Agregar Maquinista
+    </h3>
+</div>
+
+<FormMaquinista maquinista="maquinista" onValidSubmit="Grabar" onCancel="Cancelar"/>
+
+@code {
+    private Maquinista maquinista = new Maquinista();
+
+    private async Task Grabar()
+    {
+        MaquinistaDTO maquinistaDTO = new()
+            {
+                DNI = maquinista.DNI,
+                Nombre = maquinista.Nombre,
+                Telefono = maquinista.Telefono,
+            };
+
+        var HTTPRespueta = await http.Post<MaquinistaDTO>("api/maquinistas", maquinistaDTO);
+
+        if (HTTPRespueta.Error)
+        {
+            var body = HTTPRespueta.HttpResponseMessage;
+        }
+        navigationManager.NavigateTo("/maquinistas");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/maquinistas");
+    }
+}

@@ -23,10 +23,6 @@ namespace AppMaquinaBD.Data.Entity
         [Required(ErrorMessage = "El Telefono es Obligatorio")]
         [MaxLength(10, ErrorMessage = "Solo se aceptan hasta 10 caracteres en el Telefono")]
         public string Telefono { get; set; } = "";
-        
-        [Required(ErrorMessage = "La contraseña es Obligatoria")]
-        [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
-        public string Password { get; set; }
 
         public List<Trabajo>? Trabajos { get; set; }
     }

@@ -1,0 +1,100 @@
+﻿@page "/maquinistas"
+
+
+<div class="d-flex justify-content-between gap-3 align-items-center">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3 mb-0">
+        Listado de Maquinistas registrados
+    </h3>
+
+    <a href="/maquinistas/agregarMaquinista" class="btn btn-primary d-flex align-items-center fw-bold">Agregar Maquinista</a>
+</div>
+ 
+@if (Error)
+{
+
+}
+else
+{
+    @if (maquinistas == null)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-grow text-success" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    }
+    else if (maquinistas.Count == 0)
+    {
+        <p>No hay datos cargados</p>
+    }
+    else
+    {
+        <div class="table-responsive shadow-md my-4">
+            <table class="table table-hover">
+                <thead class="bg-success text-center fw-bolder">
+                    <tr>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Nombre</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">DNI</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Telefono</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Nro Referencia</th>
+                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Acciones</th>
+
+                    </tr>
+                </thead>
+                @foreach (var item in maquinistas)
+                {
+                    <tr class="border-bottom bg-light">
+                        <td class="p-3 text-center">@item.Nombre</td>
+                        <td class="p-3  text-center">@item.DNI</td>
+                        <td class="p-3 text-center">@item.Telefono</td>
+                        <td class="p-3 text-center">@item.Id</td>
+                        <td class="p-3  d-flex justify-content-center align-items-center gap-2">
+                            <a href="maquinistas/editarMaquinista/@item.Id" class="btn btn-sm btn-success bg-primary d-inline-block mr-1"><i class="oi oi-pencil"></i></a>
+                            <button class="btn btn-sm btn-danger bg-danger d-inline-block" @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}
+
+
+@code {
+    List<Maquinista>? maquinistas;
+    string Mensaje = "";
+    bool Error;
+    Maquinista MaquinistaBorrar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+    }
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Maquinista>>("api/maquinistas");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            maquinistas = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+    private async Task Eliminar(Maquinista maquinistaBorrar)
+    {
+        MaquinistaBorrar = maquinistaBorrar;
+
+        var respuesta = await http.Delete($"api/maquinistas/{MaquinistaBorrar.Id}");
+        if (respuesta.Error)
+        {
+            var body = "error no se pudo borrar";
+        }
+        MaquinistaBorrar = null;
+        await Leer();
+    }
+}

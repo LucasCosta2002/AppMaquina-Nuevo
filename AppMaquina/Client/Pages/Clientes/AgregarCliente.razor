@@ -1,0 +1,36 @@
+﻿@page "/clientes/agregarCliente"
+
+<div class="d-flex justify-content-between">
+    <h3 class="bg-success text-white fw-bold d-inline-block p-2 rounded-3">
+        Agregar cliente
+    </h3>
+</div>
+
+<FormCliente cliente="cliente" onValidSubmit="Grabar" onCancel="Cancelar"/>
+
+@code {
+    private Cliente cliente = new Cliente();
+
+    private async Task Grabar()
+    {
+        ClienteDTO clienteDTO = new()
+            {
+                Nombre = cliente.Nombre,
+                Telefono = cliente.Telefono,
+                CUIL = cliente.CUIL
+            };
+
+        var HTTPRespueta = await http.Post<ClienteDTO>("api/clientes", clienteDTO);
+
+        if (HTTPRespueta.Error)
+        {
+            var body = HTTPRespueta.HttpResponseMessage;
+        }
+        navigationManager.NavigateTo("/clientes");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/clientes");
+    }
+}

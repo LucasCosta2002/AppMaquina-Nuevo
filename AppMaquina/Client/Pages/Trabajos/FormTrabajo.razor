@@ -1,0 +1,55 @@
+﻿<EditForm Model="trabajo" OnValidSubmit="onValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="modal-body d-flex justify-content-center mt-2">
+        <div class="form-row col-md-6">
+
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Fecha</label>
+                <InputDate class="form-control" @bind-Value="@trabajo.Fecha"/>
+                <ValidationMessage For="@(() => trabajo.Fecha)" />
+            </div>
+
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Hectareas</label>
+                <InputNumber class="form-control" placeholder="Hectareas" name="Hectareas" @bind-Value="@trabajo.Hectareas" />
+                <ValidationMessage For="@(() => trabajo.Hectareas)" />
+            </div>
+            
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Agroquimico</label>
+                <InputText class="form-control" placeholder="Agroquimico" name="Agroquimico" @bind-Value="@trabajo.Agroquimico" />
+                <ValidationMessage For="@(() => trabajo.Agroquimico)" />
+            </div>
+
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Ubicacion</label>
+                <InputText class="form-control" placeholder="Ubicacion" @bind-Value="@trabajo.Ubicacion" />
+                <ValidationMessage For="@(() => trabajo.Ubicacion)" />
+            </div>
+
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Nro Maquinista</label>
+                <InputNumber class="form-control" placeholder="Referencia Maquinista" @bind-Value="@trabajo.MaquinistaId" />
+                <ValidationMessage For="@(() => trabajo.MaquinistaId)" />
+            </div> 
+            
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Nro Cliente</label>
+                <InputNumber class="form-control" placeholder="Referencia Cliente" @bind-Value="@trabajo.ClienteId" />
+                <ValidationMessage For="@(() => trabajo.ClienteId)" />
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center gap-4">
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+        <button type="submit" class="btn btn-danger" @onclick="onCancel">Cancelar</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Trabajo trabajo { get; set; } = new Trabajo();
+    [Parameter] public EventCallback onValidSubmit { get; set; }
+    [Parameter] public EventCallback onCancel { get; set; }
+
+}

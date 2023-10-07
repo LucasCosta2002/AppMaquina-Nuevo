@@ -35,7 +35,20 @@ namespace AppMaquina.Client.Servicios
 
             return new HTTPRespuesta<object>(null, !respuesta.IsSuccessStatusCode, respuesta);
         }
+        public async Task<HTTPRespuesta<object>> Put<T>(string url, T enviar)
+        {
+            var enviarJson = JsonSerializer.Serialize(enviar);
+            var enviarContent = new StringContent(enviarJson, Encoding.UTF8,"application/json");
 
+            var respuesta = await http.PutAsync(url, enviarContent);
+            return new HTTPRespuesta<object>(null, !respuesta.IsSuccessStatusCode, respuesta);
+        }
+
+        public async Task<HTTPRespuesta<object>> Delete(string url)
+        {
+            var respuesta = await http.DeleteAsync(url);
+            return new HTTPRespuesta<object>(null, !respuesta.IsSuccessStatusCode, respuesta);
+        }
         private async Task<T?> Deserealizar<T>(HttpResponseMessage response)
         {
             var respuestaString = await response.Content.ReadAsStringAsync();

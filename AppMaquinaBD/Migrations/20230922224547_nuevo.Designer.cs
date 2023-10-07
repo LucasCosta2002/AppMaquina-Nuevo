@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppMaquinaBD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230913174323_DTO")]
-    partial class DTO
+    [Migration("20230922224547_nuevo")]
+    partial class nuevo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,10 +68,6 @@ namespace AppMaquinaBD.Migrations
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
