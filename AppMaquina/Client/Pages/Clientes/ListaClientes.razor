@@ -29,8 +29,8 @@ else
     }
     else
     {
-        <div class="table-responsive shadow-md my-4">
-            <table class="table table-hover">
+        <div class="table-responsive my-4">
+            <table class="table table-hover shadow">
                 <thead class="bg-success text-center fw-bolder">
                     <tr>
                         <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Nombre</th>
@@ -49,8 +49,8 @@ else
                         <td class="p-3 text-center">@item.Telefono</td>
                         <td class="p-3 text-center">@item.Id</td>
                         <td class="p-3  d-flex justify-content-center align-items-center gap-2">
-                            <a href="clientes/editarCliente/@item.Id" class="btn btn-sm btn-success bg-primary d-inline-block mr-1"><i class="oi oi-pencil"></i></a>
-                            <button class="btn btn-sm btn-danger bg-danger d-inline-block" @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
+                            <a href="clientes/editarCliente/@item.Id" class="btn btn-sm btn-success bg-primary border-0"><i class="oi oi-pencil"></i></a>
+                            <button class="btn btn-sm btn-danger bg-danger " @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
                         </td>
                     </tr>
                 }

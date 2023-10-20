@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppMaquinaBD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230922224547_nuevo")]
-    partial class nuevo
+    [Migration("20231008134411_jn")]
+    partial class jn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

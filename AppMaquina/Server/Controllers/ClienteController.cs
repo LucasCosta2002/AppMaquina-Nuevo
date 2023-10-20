@@ -44,7 +44,6 @@ namespace AppMaquina.Server.Controllers
             return await context.Clientes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-
         [HttpPost]
         public async Task<ActionResult<Cliente>> Post(ClienteDTO cliente)
         {

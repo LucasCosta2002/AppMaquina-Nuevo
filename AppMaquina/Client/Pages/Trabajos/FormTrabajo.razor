@@ -1,4 +1,6 @@
-﻿<EditForm Model="trabajo" OnValidSubmit="onValidSubmit">
+﻿@using AppMaquinaBD.Data;
+@using Microsoft.EntityFrameworkCore;
+<EditForm Model="trabajo" OnValidSubmit="onValidSubmit">
     <DataAnnotationsValidator />
 
     <div class="modal-body d-flex justify-content-center mt-2">
@@ -9,37 +11,45 @@
                 <InputDate class="form-control" @bind-Value="@trabajo.Fecha"/>
                 <ValidationMessage For="@(() => trabajo.Fecha)" />
             </div>
-
             <div class="col mb-3">
                 <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Hectareas</label>
-                <InputNumber class="form-control" placeholder="Hectareas" name="Hectareas" @bind-Value="@trabajo.Hectareas" />
+                <InputNumber onforminput="0" class="form-control" placeholder="Hectareas" name="Hectareas" @bind-Value="@trabajo.Hectareas" />
                 <ValidationMessage For="@(() => trabajo.Hectareas)" />
             </div>
-            
             <div class="col mb-3">
                 <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Agroquimico</label>
                 <InputText class="form-control" placeholder="Agroquimico" name="Agroquimico" @bind-Value="@trabajo.Agroquimico" />
                 <ValidationMessage For="@(() => trabajo.Agroquimico)" />
             </div>
-
             <div class="col mb-3">
                 <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Ubicacion</label>
                 <InputText class="form-control" placeholder="Ubicacion" @bind-Value="@trabajo.Ubicacion" />
                 <ValidationMessage For="@(() => trabajo.Ubicacion)" />
             </div>
+        
+            <div class="col mb-3">
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Maquinista</label>
+                <InputSelect class="form-control" @bind-Value="trabajo.MaquinistaId">
+                    <option>Selecciona un Maquinista</option>
+                    @foreach (var maquinista in maquinistas)
+                    {
+                        <option value="@maquinista.Id">@maquinista.Nombre</option>
+                    }
+                </InputSelect>
+            </div>
 
             <div class="col mb-3">
-                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Nro Maquinista</label>
-                <InputNumber class="form-control" placeholder="Referencia Maquinista" @bind-Value="@trabajo.MaquinistaId" />
-                <ValidationMessage For="@(() => trabajo.MaquinistaId)" />
-            </div> 
-            
-            <div class="col mb-3">
-                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Nro Cliente</label>
-                <InputNumber class="form-control" placeholder="Referencia Cliente" @bind-Value="@trabajo.ClienteId" />
-                <ValidationMessage For="@(() => trabajo.ClienteId)" />
+                <label class="bg-success text-white fw-bold d-inline-block p-1 px-2 rounded-3 mb-2">Cliente</label>
+                <InputSelect class="form-control" @bind-Value="trabajo.ClienteId">
+                    <option value="">Selecciona un cliente</option>
+                    @foreach (var cliente in clientes)
+                    {
+                        <option value="@cliente.Id">@cliente.Nombre</option>
+                    }
+                </InputSelect>
             </div>
         </div>
+
     </div>
     <div class="d-flex justify-content-center gap-4">
         <button type="submit" class="btn btn-primary">Aceptar</button>
@@ -52,4 +62,46 @@
     [Parameter] public EventCallback onValidSubmit { get; set; }
     [Parameter] public EventCallback onCancel { get; set; }
 
+    List<Cliente> clientes = new List<Cliente>();
+    List<Maquinista> maquinistas = new List<Maquinista>();
+
+    string Mensaje = "";
+    bool Error;
+    Trabajo TrabajoBorrar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LeerClientes();
+        await LeerMaquinistas();
+    }
+
+    private async Task LeerClientes()
+    {
+        var respuesta = await http.Get<List<Cliente>>("api/clientes");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            clientes = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+    private async Task LeerMaquinistas()
+    {
+        var respuesta = await http.Get<List<Maquinista>>("api/maquinistas");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            maquinistas = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
 }

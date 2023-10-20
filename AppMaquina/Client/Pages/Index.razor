@@ -8,7 +8,7 @@
         Listado de Trabajos registrados
     </h3>
 
-    <a href="/agregarTrabajo" class="btn btn-primary d-flex align-items-center fw-bold">Agregar Trabajo</a>
+    <a href="/agregarTrabajo" class="btn btn-primary shadow d-flex align-items-center fw-bold">Agregar Trabajo</a>
 </div>
 
 
@@ -32,11 +32,10 @@ else
     }
     else
     {
-        <div class="table-responsive shadow-md my-4">
-            <table class="table table-hover">
+        <div class="table-responsive my-4">
+            <table class="table table-hover shadow">
                 <thead class="bg-success text-center fw-bolder">
                     <tr>
-                        <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Id</th>
                         <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Cliente</th>
                         <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Maquinista</th>
                         <th scope="col" class="px-6 py-2 font-weight-bold text-white h4">Ubicación</th>
@@ -48,18 +47,19 @@ else
                 </thead>
                 @foreach (var item in trabajos)
                 {
-                    var cliente = clientes.FirstOrDefault(c => c.Id == item.ClienteId);
+                    var cliente = clientes.FirstOrDefault(c => c.Id  == item.ClienteId);
                     var maquinista = maquinistas.FirstOrDefault(m => m.Id == item.MaquinistaId);
 
                     <tr class="border-bottom bg-light">
-                        <td class="p-3 text-center">@item.Id</td>
+                        <td class="p-3 text-center">@cliente.Nombre</td>
+                        <td class="p-3 text-center">@maquinista.Nombre</td>
                         <td class="p-3 text-center">@item.Ubicacion</td>
                         <td class="p-3 text-center">@item.Hectareas</td>
                         <td class="p-3 text-center">@item.Agroquimico</td>
                         <td class="p-3 text-center">@item.Fecha.ToShortDateString()</td>
-                        <td class="p-3  d-flex justify-content-center align-items-center gap-2">
-                            <a href="/editarTrabajo/@item.Id" class="btn btn-sm btn-success bg-primary d-inline-block mr-1"><i class="oi oi-pencil"></i></a>
-                            <button class="btn btn-sm btn-danger bg-danger d-inline-block" @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
+                        <td class="p-3 d-flex justify-content-center align-items-center gap-2">
+                            <a href="/editarTrabajo/@item.Id" class="btn btn-sm btn-success bg-primary border-0"><i class="oi oi-pencil"></i></a>
+                            <button class="btn btn-sm btn-danger bg-danger" @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
                         </td>
                     </tr>
                 }
@@ -82,7 +82,10 @@ else
     {
         await base.OnInitializedAsync();
         await Leer();
+        await LeerClientes();
+        await LeerMaquinistas();
     }
+
     private async Task Leer()
     {
         var respuesta = await http.Get<List<Trabajo>>("api/trabajos");
@@ -91,6 +94,34 @@ else
         if (!respuesta.Error)
         {
             trabajos = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+    private async Task LeerClientes()
+    {
+        var respuesta = await http.Get<List<Cliente>>("api/clientes");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            clientes = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+    private async Task LeerMaquinistas()
+    {
+        var respuesta = await http.Get<List<Maquinista>>("api/maquinistas");
+        Error = respuesta.Error;
+
+        if (!respuesta.Error)
+        {
+            maquinistas = respuesta.Respuesta;
         }
         else
         {

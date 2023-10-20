@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppMaquinaBD.Migrations
 {
     /// <inheritdoc />
-    public partial class nuevo : Migration
+    public partial class jn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
