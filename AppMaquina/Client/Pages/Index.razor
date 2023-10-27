@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using AppMaquinaBD.Data.Entity;
+@inject IJSRuntime JS; 
 
 <PageTitle>AppMaquina</PageTitle>
 
@@ -28,7 +29,7 @@ else
     }
     else if (trabajos.Count == 0)
     {
-        <tr>No hay datos cargados</tr>
+        <h2>No hay datos cargados</h2>
     }
     else
     {
@@ -60,6 +61,7 @@ else
                         <td class="p-3 d-flex justify-content-center align-items-center gap-2">
                             <a href="/editarTrabajo/@item.Id" class="btn btn-sm btn-success bg-primary border-0"><i class="oi oi-pencil"></i></a>
                             <button class="btn btn-sm btn-danger bg-danger" @onclick="()=>Eliminar(item)"><i class="oi oi-trash"></i></button>
+                            <button class="btn btn-sm btn-warning bg-warning" @onclick="(()=> export(item, maquinista, cliente))"><i class="oi oi-document"></i></button>
                         </td>
                     </tr>
                 }
@@ -140,6 +142,14 @@ else
         TrabajoBorrar = null;
         await Leer();
     }
+
+    private async Task export(Trabajo trabajo, Maquinista maquinista, Cliente cliente)
+    {
+        await JS.InvokeVoidAsync("GenerarPDF", trabajo, maquinista, cliente);
+
+    }
+
+
 }
 
 
